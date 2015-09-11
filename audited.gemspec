@@ -36,7 +36,7 @@ Gem::Specification.new do |gem|
     gem.add_development_dependency 'bson', '~> 1.6'
   else
     gem.add_development_dependency 'sqlite3', '~> 1.3'
-    gem.add_development_dependency 'mysql2', '~> 0.4'
+    gem.add_development_dependency 'mysql2', '~> 0.3.20'
     gem.add_development_dependency 'pg', '~> 0.18'
     gem.add_development_dependency 'bson_ext', '~> 1.6'
   end
