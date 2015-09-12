@@ -5,9 +5,9 @@ require 'rspec/core/rake_task'
 require 'rake/testtask'
 require 'appraisal'
 
-Bundler::GemHelper.install_tasks(:name => 'audited')
-Bundler::GemHelper.install_tasks(:name => 'audited-activerecord')
-Bundler::GemHelper.install_tasks(:name => 'audited-mongo_mapper')
+Bundler::GemHelper.install_tasks(name: 'audited')
+Bundler::GemHelper.install_tasks(name: 'audited-activerecord')
+Bundler::GemHelper.install_tasks(name: 'audited-mongo_mapper')
 
 ADAPTERS = %w(active_record mongo_mapper)
 
@@ -30,7 +30,7 @@ Rake::TestTask.new do |t|
   t.verbose = true
 end
 
-task :default => [:spec, :test]
+task default: [:spec, :test]
 
 namespace :db do
   desc "setup the test database"
