@@ -1,13 +1,14 @@
 require File.expand_path('../mongo_mapper_spec_helper', __FILE__)
 
 class MongoAuditsController < ActionController::Base
-  def audit
+  attr_reader :company
+
+  def create
     @company = Models::MongoMapper::Company.create
     head :ok
   end
-  attr_reader :company
 
-  def update_user
+  def update
     current_user.update_attributes(password: 'foo')
     head :ok
   end
@@ -33,8 +34,8 @@ describe MongoAuditsController, :adapter => :mongo_mapper do
       controller.send(:current_user=, user)
 
       expect {
-        post :audit
-      }.to change( Audited.audit_class, :count )
+        post :create
+      }.to change(Audited.audit_class, :count)
 
       expect(controller.company.audits.last.user).to eq(user)
     end
@@ -44,8 +45,8 @@ describe MongoAuditsController, :adapter => :mongo_mapper do
       Audited.current_user_method = :custom_user
 
       expect {
-        post :audit
-      }.to change( Audited.audit_class, :count )
+        post :create
+      }.to change(Audited.audit_class, :count)
 
       expect(controller.company.audits.last.user).to eq(user)
     end
@@ -54,7 +55,7 @@ describe MongoAuditsController, :adapter => :mongo_mapper do
       request.env['REMOTE_ADDR'] = "1.2.3.4"
       controller.send(:current_user=, user)
 
-      post :audit
+      post :create
 
       expect(controller.company.audits.last.remote_address).to eq('1.2.3.4')
     end
@@ -63,23 +64,21 @@ describe MongoAuditsController, :adapter => :mongo_mapper do
       allow_any_instance_of(ActionDispatch::Request).to receive(:uuid).and_return("abc123")
       controller.send(:current_user=, user)
 
-      post :audit
+      post :create
 
       expect(controller.company.audits.last.request_uuid).to eq("abc123")
     end
 
   end
 
-  describe "POST update_user" do
-
+  describe "PUT update" do
     it "should not save blank audits" do
       controller.send(:current_user=, user)
 
       expect {
-        post :update_user
-      }.to_not change( Audited.audit_class, :count )
+        put :update, id: 123
+      }.to_not change(Audited.audit_class, :count)
     end
-
   end
 end
 
