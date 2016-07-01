@@ -32,7 +32,7 @@ The installation process depends on what ORM your app is using.
 Add the appropriate gem to your Gemfile:
 
 ```ruby
-gem "audited-activerecord", "~> 4.0"
+gem "audited", "~> 4.3"
 ```
 
 If you are using rails 5.0, you would also need the following line in your Gemfile.
