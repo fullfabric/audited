@@ -55,6 +55,11 @@ module Audited
         end
         record
       end
+
+      # use created_at as timestamp cache key
+      def collection_cache_key(collection = all, timestamp_column = :created_at)
+        super(collection, :created_at)
+      end
     end
 
     # Return an instance of what the object looked like at this revision. If
