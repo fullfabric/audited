@@ -195,5 +195,4 @@ describe Audited::Adapters::ActiveRecord::Audit, adapter: :active_record do
     end
 
   end
-
 end

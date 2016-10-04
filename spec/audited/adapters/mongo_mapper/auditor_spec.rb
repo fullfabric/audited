@@ -599,14 +599,14 @@ describe Audited::Auditor, adapter: :mongo_mapper do
 
   describe "STI auditing" do
     it "should correctly disable auditing when using STI" do
-      company = Models::ActiveRecord::Company::STICompany.create name: 'The auditors'
+      company = Models::MongoMapper::Company::STICompany.create name: 'The auditors'
 
-      expect(company.type).to eq("Models::ActiveRecord::Company::STICompany")
+      expect(company.type).to eq("Models::MongoMapper::Company::STICompany")
 
       expect {
-        Models::ActiveRecord::Company.auditing_enabled = false
+        Models::MongoMapper::Company.auditing_enabled = false
         company.update_attributes name: 'STI auditors'
-        Models::ActiveRecord::Company.auditing_enabled = true
+        Models::MongoMapper::Company.auditing_enabled = true
       }.to_not change(Audited.audit_class, :count)
     end
   end

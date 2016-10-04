@@ -2,6 +2,26 @@ require 'set'
 require 'audited/audit'
 
 module Audited
+  class YAMLIfTextColumnType
+    class << self
+      def load(obj)
+        if Audited::Audit.columns_hash["audited_changes"].sql_type == "text"
+          ActiveRecord::Coders::YAMLColumn.new(Object).load(obj)
+        else
+          obj
+        end
+      end
+
+      def dump(obj)
+        if Audited::Audit.columns_hash["audited_changes"].sql_type == "text"
+          ActiveRecord::Coders::YAMLColumn.new(Object).dump(obj)
+        else
+          obj
+        end
+      end
+    end
+  end
+
   module Adapters
     module ActiveRecord
       # Audit saves the changes to ActiveRecord models.  It has the following attributes:
@@ -9,7 +29,7 @@ module Audited
       # * <tt>auditable</tt>: the ActiveRecord model that was changed
       # * <tt>user</tt>: the user that performed the change; a string or an ActiveRecord model
       # * <tt>action</tt>: one of create, update, or delete
-      # * <tt>audited_changes</tt>: a serialized hash of all the changes
+      # * <tt>audited_changes</tt>: a hash of all the changes
       # * <tt>comment</tt>: a comment set with the audit
       # * <tt>version</tt>: the version of the model
       # * <tt>request_uuid</tt>: a uuid based that allows audits from the same controller request
@@ -19,7 +39,7 @@ module Audited
         include Audited::Audit
         include ActiveModel::Observing
 
-        serialize :audited_changes
+        serialize :audited_changes, YAMLIfTextColumnType
 
         scope :ascending,     ->{ reorder(version: :asc) }
         scope :descending,    ->{ reorder(version: :desc)}

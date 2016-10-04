@@ -49,6 +49,39 @@ describe Audited::Auditor, adapter: :active_record do
 
       expect(user.audits.last.audited_changes.keys).to eq(%w{password})
     end
+
+     # Postgres json and jsonb support was added in Rails 4.2
+    if ActiveRecord::Base.connection.adapter_name == 'PostgreSQL' && Rails.version >= "4.2.0.0"
+      describe "'json' and 'jsonb' audited_changes column type" do
+        let(:migrations_path) { SPEC_ROOT.join("support/active_record/postgres") }
+
+        after do
+          ActiveRecord::Migrator.rollback([migrations_path])
+        end
+
+        it "should work if column type is 'json'" do
+          ActiveRecord::Migrator.up([migrations_path], 1)
+          Audited::Audit.reset_column_information
+          expect(Audited::Audit.columns_hash["audited_changes"].sql_type).to eq("json")
+
+          user = Models::ActiveRecord::User.create
+          user.name = "new name"
+          user.save!
+          expect(user.audits.last.audited_changes).to eq({"name" => [nil, "new name"]})
+        end
+
+        it "should work if column type is 'jsonb'" do
+          ActiveRecord::Migrator.up([migrations_path], 2)
+          Audited::Audit.reset_column_information
+          expect(Audited::Audit.columns_hash["audited_changes"].sql_type).to eq("jsonb")
+
+          user = Models::ActiveRecord::User.create
+          user.name = "new name"
+          user.save!
+          expect(user.audits.last.audited_changes).to eq({"name" => [nil, "new name"]})
+        end
+      end
+    end
   end
 
   describe :new do
@@ -593,14 +626,14 @@ describe Audited::Auditor, adapter: :active_record do
 
   describe "STI auditing" do
     it "should correctly disable auditing when using STI" do
-      company = Models::MongoMapper::Company::STICompany.create name: 'The auditors'
+      company = Models::ActiveRecord::Company::STICompany.create name: 'The auditors'
 
-      expect(company.type).to eq("Models::MongoMapper::Company::STICompany")
+      expect(company.type).to eq("Models::ActiveRecord::Company::STICompany")
 
       expect {
-        Models::MongoMapper::Company.auditing_enabled = false
+        Models::ActiveRecord::Company.auditing_enabled = false
         company.update_attributes name: 'STI auditors'
-        Models::MongoMapper::Company.auditing_enabled = true
+        Models::ActiveRecord::Company.auditing_enabled = true
       }.to_not change(Audited.audit_class, :count)
     end
   end

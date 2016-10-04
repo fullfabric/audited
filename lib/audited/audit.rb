@@ -17,11 +17,6 @@ module Audited
         self.audited_class_names = Set.new
       end
 
-      # Returns the list of classes that are being audited
-      def audited_classes
-        audited_class_names.map(&:constantize)
-      end
-
       # All audits made during the block called will be recorded as made
       # by +user+. This method is hopefully threadsafe, making it ideal
       # for background operations that require audit information.
