@@ -74,8 +74,8 @@ describe AuditsController, adapter: :active_record do
       controller.send(:current_user=, user)
 
       expect {
-        post :update, id: 123
-      }.to_not change(Audited.audit_class, :count)
+        put :update, Rails::VERSION::MAJOR == 4 ? {id: 123} : {params: {id: 123}}
+      }.to_not change(Audited.audit_class, :count )
     end
   end
 end

@@ -76,7 +76,7 @@ describe MongoAuditsController, adapter: :mongo_mapper do
       controller.send(:current_user=, user)
 
       expect {
-        put :update, id: 123
+        put :update, Rails::VERSION::MAJOR == 4 ? {id: 123} : {params: {id: 123}}
       }.to_not change(Audited.audit_class, :count)
     end
   end
