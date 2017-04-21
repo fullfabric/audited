@@ -1,6 +1,8 @@
 require File.expand_path('../active_record_spec_helper', __FILE__)
 
 class AuditsController < ActionController::Base
+  before_action :populate_user
+
   attr_reader :company
 
   def create
@@ -17,6 +19,8 @@ class AuditsController < ActionController::Base
 
   attr_accessor :current_user
   attr_accessor :custom_user
+
+  def populate_user; end
 end
 
 describe AuditsController, adapter: :active_record do
@@ -67,6 +71,19 @@ describe AuditsController, adapter: :active_record do
 
       expect(controller.company.audits.last.request_uuid).to eq("abc123")
     end
+
+    it "should call current_user after controller callbacks" do
+      expect(controller).to receive(:populate_user) do
+        controller.send(:current_user=, user)
+      end
+
+      expect {
+        post :create
+      }.to change(Audited.audit_class, :count)
+
+      expect(controller.company.audits.last.user).to eq(user)
+    end
+
   end
 
   describe "PUT update" do
