@@ -36,7 +36,9 @@ describe Audited::Auditor, adapter: :active_record do
     end
 
     it "should not save non-audited columns" do
-      expect(create_active_record_user.audits.first.audited_changes.keys.any? { |col| ['created_at', 'updated_at', 'password'].include?( col ) }).to eq(false)
+      Models::ActiveRecord::User.non_audited_columns = (Models::ActiveRecord::User.non_audited_columns << :favourite_device)
+
+      expect(create_active_record_user.audits.first.audited_changes.keys.any? { |col| ['favourite_device', 'created_at', 'updated_at', 'password'].include?( col ) }).to eq(false)
     end
 
     it "should not save other columns than specified in 'only' option" do

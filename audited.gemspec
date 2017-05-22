@@ -37,4 +37,3 @@ Gem::Specification.new do |gem|
     gem.add_development_dependency 'bson_ext', '~> 1.6'
   end
 end
-

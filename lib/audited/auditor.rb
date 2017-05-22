@@ -125,7 +125,7 @@ module Audited
 
       # List of attributes that are audited.
       def audited_attributes
-        attributes.except(*non_audited_columns)
+        attributes.except(*non_audited_columns.map(&:to_s))
       end
 
       def non_audited_columns
@@ -247,7 +247,7 @@ module Audited
     module AuditedClassMethods
       # Returns an array of columns that are audited. See non_audited_columns
       def audited_columns
-        columns.select {|c| !non_audited_columns.include?(c.name) }
+        columns.reject { |c| non_audited_columns.map(&:to_s).include?(c.name) }
       end
 
       def non_audited_columns
