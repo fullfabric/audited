@@ -194,4 +194,28 @@ describe Audited::Adapters::ActiveRecord::Audit, adapter: :active_record do
       expect(Audited.store[:audited_user]).to be_nil
     end
   end
+
+  describe "undo" do
+    it "should undo changes" do
+      user = Models::ActiveRecord::User.create(name: "John")
+      user.update_attribute(:name, 'Joe')
+      user.audits.last.undo
+      user.reload
+
+      expect(user.name).to eq("John")
+    end
+
+    it "should undo destroyed model" do
+      user = Models::ActiveRecord::User.create(name: "John")
+      user.destroy
+      user.audits.last.undo
+      user = Models::ActiveRecord::User.find_by(name: "John")
+      expect(user.name).to eq("John")
+    end
+
+    it "should undo created model" do
+      user = Models::ActiveRecord::User.create(name: "John")
+      expect {user.audits.last.undo}.to change(Models::ActiveRecord::User, :count).by(-1)
+    end
+  end
 end
