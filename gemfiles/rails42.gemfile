@@ -9,4 +9,4 @@ gem "bson_ext", "~> 1.6"
 gem "rails", "~> 4.2.0"
 gem "protected_attributes"
 
-gemspec :name => "audited", :path => "../"
+gemspec name: "audited", path: "../"
