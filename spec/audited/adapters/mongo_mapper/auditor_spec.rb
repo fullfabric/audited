@@ -61,6 +61,25 @@ describe Audited::Auditor, adapter: :mongo_mapper do
 
       expect(user.audits.last.audited_changes.keys).to eq(%w{password})
     end
+
+    it "should save attributes not specified in 'except' option" do
+      user = Models::MongoMapper::User.create
+      user.instance_eval do
+        def non_column_attr
+          @non_column_attr
+        end
+
+        def non_column_attr=(val)
+          attribute_will_change!("non_column_attr")
+          @non_column_attr = val
+        end
+      end
+
+      user.password = "password"
+      user.non_column_attr = "some value"
+      user.save!
+      expect(user.audits.last.audited_changes.keys).to eq(%w{non_column_attr})
+    end
   end
 
   describe :new do
