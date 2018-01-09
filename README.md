@@ -38,7 +38,7 @@ The installation process depends on what ORM your app is using.
 Add the appropriate gem to your Gemfile:
 
 ```ruby
-gem "audited", "~> 4.5"
+gem "audited", "~> 4.6"
 ```
 
 Then, from your Rails app directory, create the `audits` table:
