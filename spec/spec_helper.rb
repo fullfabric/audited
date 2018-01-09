@@ -9,6 +9,7 @@ require 'rails_app/config/environment'
 require 'rspec/rails'
 require 'audited'
 require 'audited_spec_helpers'
+require 'support/active_record/models'
 
 SPEC_ROOT = Pathname.new(File.expand_path('../', __FILE__))
 
