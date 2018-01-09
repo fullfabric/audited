@@ -474,6 +474,10 @@ describe Audited::Auditor, adapter: :active_record do
         user.revision(1).save!
       }.to change( Models::ActiveRecord::User, :count ).by(1)
     end
+
+    it "should return nil for values greater than the number of revisions" do
+      expect(user.revision(user.revisions.count + 1)).to be_nil
+    end
   end
 
   describe "revision_at" do
