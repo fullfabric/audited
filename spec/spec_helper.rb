@@ -1,6 +1,5 @@
 ENV['RAILS_ENV'] = 'test'
 
-require 'protected_attributes'
 require 'rails_app/config/environment'
 require 'rspec/rails'
 require 'audited'
@@ -20,4 +19,6 @@ RSpec.configure do |config|
   config.before(:each, :adapter => :mongo_mapper) do
     Audited.audit_class = Audited::Adapters::MongoMapper::Audit
   end
+
+  config.filter_run_when_matching :focus
 end

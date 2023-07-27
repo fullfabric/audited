@@ -20,10 +20,12 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'rails-observers', '~> 0.1.2'
 
-  gem.add_development_dependency "protected_attributes"
   gem.add_development_dependency 'appraisal', '~> 1.0.0'
-  gem.add_development_dependency 'mongo_mapper', '~> 0.13.0.beta2'
-  gem.add_development_dependency 'rails', '~> 4.2.0'
-  gem.add_development_dependency 'rspec-rails', '~> 3.0'
+  gem.add_development_dependency 'mongo_mapper', '~> 0.15.0'
+  gem.add_development_dependency 'rails', '~> 5.2.0'
+  gem.add_development_dependency 'rspec-rails', '~> 4.0'
+
+  # https://github.com/rails/sprockets-rails/issues/444#issuecomment-637817050
+  gem.add_development_dependency 'sprockets', "<4"
 end
 
