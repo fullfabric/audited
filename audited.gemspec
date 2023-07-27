@@ -29,16 +29,16 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'sprockets', "<4"
 
   # JRuby support for the test ENV
-  unless defined?(JRUBY_VERSION)
-    gem.add_development_dependency 'sqlite3', '~> 1.3'
-    gem.add_development_dependency 'mysql2', '~> 0.4'
-    gem.add_development_dependency 'pg', '~> 0.18'
-    gem.add_development_dependency 'bson_ext', '~> 1.6'
-  else
+  if defined?(JRUBY_VERSION)
     gem.add_development_dependency 'activerecord-jdbcsqlite3-adapter', '~> 1.3'
     gem.add_development_dependency 'activerecord-jdbcpostgresql-adapter', '~> 1.3'
     gem.add_development_dependency 'activerecord-jdbcmysql-adapter', '~> 1.3'
     gem.add_development_dependency 'bson', '~> 1.6'
+  else
+    gem.add_development_dependency 'sqlite3', '~> 1.3'
+    gem.add_development_dependency 'mysql2', '~> 0.4'
+    gem.add_development_dependency 'pg', '~> 0.18'
+    gem.add_development_dependency 'bson_ext', '~> 1.6'
   end
 end
 
