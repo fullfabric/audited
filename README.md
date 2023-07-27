@@ -1,5 +1,4 @@
-Audited [![Build Status](https://secure.travis-ci.org/collectiveidea/audited.png)](http://travis-ci.org/collectiveidea/audited) [![Dependency Status](https://gemnasium.com/collectiveidea/audited.png)](https://gemnasium.com/collectiveidea/audited)[![Code Climate](https://codeclimate.com/github/collectiveidea/audited.png)](https://codeclimate.com/github/collectiveidea/audited)
-=======
+# Audited [![Build Status](https://secure.travis-ci.org/collectiveidea/audited.png)](http://travis-ci.org/collectiveidea/audited) [![Dependency Status](https://gemnasium.com/collectiveidea/audited.png)](https://gemnasium.com/collectiveidea/audited)[![Code Climate](https://codeclimate.com/github/collectiveidea/audited.png)](https://codeclimate.com/github/collectiveidea/audited)
 
 **Audited** (previously acts_as_audited) is an ORM extension that logs all changes to your models. Audited also allows you to record who made those changes, save comments and associate models related to the changes.
 
@@ -9,9 +8,11 @@ Audited currently (4.x) works with Rails 4.2. For Rails 3, use gem version 3.0 o
 
 Audited supports and is [tested against](http://travis-ci.org/collectiveidea/audited) the following Ruby versions:
 
-* 2.0.0
-* 2.1.5
-* 2.2.0
+- 2.0.0
+- 2.1.5
+- 2.2.0
+- 2.2.4
+- 2.3.0
 
 Audited may work just fine with a Ruby version not listed above, but we can't guarantee that it will. If you'd like to maintain a Ruby that isn't listed, please let us know with a [pull request](https://github.com/collectiveidea/audited/pulls).
 
@@ -19,8 +20,8 @@ Audited may work just fine with a Ruby version not listed above, but we can't gu
 
 In a previous life, Audited was ActiveRecord-only. Audited will now audit models for the following backends:
 
-* ActiveRecord
-* MongoMapper
+- ActiveRecord
+- MongoMapper
 
 ## Installation
 
@@ -262,7 +263,6 @@ Audited assumes you are using `attr_accessible`. If you're using
 `attr_protected` or `strong_parameters`, you'll have to take an extra step or
 two.
 
-
 If you're using `strong_parameters` with Rails 3.x, be sure to add `allow_mass_assignment: true` to your `audited` call; otherwise Audited will
 interfere with `strong_parameters` and none of your `save` calls will work.
 
@@ -295,8 +295,8 @@ Or join the [mailing list](http://groups.google.com/group/audited) to get help o
 
 In the spirit of [free software](http://www.fsf.org/licensing/essays/free-sw.html), **everyone** is encouraged to help improve this project. Here are a few ways _you_ can pitch in:
 
-* Use prerelease versions of Audited.
-* [Report bugs](https://github.com/collectiveidea/audited/issues).
-* Fix bugs and submit [pull requests](http://github.com/collectiveidea/audited/pulls).
-* Write, clarify or fix documentation.
-* Refactor code.
+- Use prerelease versions of Audited.
+- [Report bugs](https://github.com/collectiveidea/audited/issues).
+- Fix bugs and submit [pull requests](http://github.com/collectiveidea/audited/pulls).
+- Write, clarify or fix documentation.
+- Refactor code.

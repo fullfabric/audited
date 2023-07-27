@@ -5,8 +5,6 @@ module Audited
   class Sweeper < ActionController::Caching::Sweeper
     observe Audited.audit_class
 
-    attr_accessor :controller
-
     def around(controller)
       begin
         self.controller = controller
@@ -56,7 +54,7 @@ module Audited
   end
 end
 
-if defined?(ActionController) && defined?(ActionController::Base)
+ActiveSupport.on_load(:action_controller) do
   # Create dynamic subclass of Audited::Sweeper otherwise rspec will
   # fail with both ActiveRecord and MongoMapper tests as there will be
   # around_filter collision
@@ -66,7 +64,11 @@ if defined?(ActionController) && defined?(ActionController::Base)
     end
   end
 
-  ActionController::Base.class_eval do
-    around_filter sweeper_class.instance
+  if defined?(ActionController::Base)
+    ActionController::Base.around_action sweeper_class.instance
+  end
+
+  if defined?(ActionController::API)
+    ActionController::API.around_action sweeper_class.instance
   end
 end

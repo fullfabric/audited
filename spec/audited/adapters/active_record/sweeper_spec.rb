@@ -3,12 +3,13 @@ require File.expand_path('../active_record_spec_helper', __FILE__)
 class AuditsController < ActionController::Base
   def audit
     @company = Models::ActiveRecord::Company.create
-    render nothing: true
+    head :ok
   end
+  attr_reader :company
 
   def update_user
     current_user.update_attributes(password: 'foo')
-    render nothing: true
+    head :ok
   end
 
   private
@@ -34,7 +35,7 @@ describe AuditsController, adapter: :active_record do
         post :audit
       }.to change( Audited.audit_class, :count )
 
-      expect(assigns(:company).audits.last.user).to eq(user)
+      expect(controller.company.audits.last.user).to eq(user)
     end
 
     it "should support custom users for sweepers" do
@@ -45,7 +46,7 @@ describe AuditsController, adapter: :active_record do
         post :audit
       }.to change( Audited.audit_class, :count )
 
-      expect(assigns(:company).audits.last.user).to eq(user)
+      expect(controller.company.audits.last.user).to eq(user)
     end
 
     it "should record the remote address responsible for the change" do
@@ -54,7 +55,7 @@ describe AuditsController, adapter: :active_record do
 
       post :audit
 
-      expect(assigns(:company).audits.last.remote_address).to eq('1.2.3.4')
+      expect(controller.company.audits.last.remote_address).to eq('1.2.3.4')
     end
 
     it "should record a UUID for the web request responsible for the change" do
@@ -63,7 +64,7 @@ describe AuditsController, adapter: :active_record do
 
       post :audit
 
-      expect(assigns(:company).audits.last.request_uuid).to eq("abc123")
+      expect(controller.company.audits.last.request_uuid).to eq("abc123")
     end
   end
 

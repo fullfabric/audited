@@ -8,6 +8,7 @@ gem "pg", "~> 0.17"
 gem "bson_ext", "~> 1.6"
 gem "rails", "~> 4.0.0"
 gem "rails-observers"
+gem "protected_attributes"
 gem "test-unit"
 
 gemspec :name => "audited", :path => "../"
