@@ -431,6 +431,30 @@ describe Audited::Auditor, :adapter => :mongo_mapper do
       Models::MongoMapper::User.without_auditing { raise } rescue nil
       expect(Models::MongoMapper::User.auditing_enabled).to eq(true)
     end
+
+    it "should be thread safe using a #without_auditing block" do
+      t1 = Thread.new do
+        expect(Models::MongoMapper::User.auditing_enabled).to eq(true)
+        Models::MongoMapper::User.without_auditing do
+          expect(Models::MongoMapper::User.auditing_enabled).to eq(false)
+          Models::MongoMapper::User.create!(name: 'Bart')
+          sleep 1
+          expect(Models::MongoMapper::User.auditing_enabled).to eq(false)
+        end
+        expect(Models::MongoMapper::User.auditing_enabled).to eq(true)
+      end
+
+      t2 = Thread.new do
+        sleep 0.5
+        expect(Models::MongoMapper::User.auditing_enabled).to eq(true)
+        Models::MongoMapper::User.create!(name: 'Lisa')
+      end
+      t1.join
+      t2.join
+
+      expect(Models::MongoMapper::User.find_by_name('Bart').audits.count).to eq(0)
+      expect(Models::MongoMapper::User.find_by_name('Lisa').audits.count).to eq(1)
+    end if ActiveRecord::Base.connection.adapter_name != 'SQLite'
   end
 
   describe "comment required" do
