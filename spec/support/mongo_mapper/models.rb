@@ -114,6 +114,9 @@ module Models
       audited
     end
 
+    class Company::STICompany < Company
+    end
+
     class Owner
       include ::MongoMapper::Document
 

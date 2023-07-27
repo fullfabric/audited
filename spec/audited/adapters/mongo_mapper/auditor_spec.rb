@@ -1,6 +1,6 @@
 require File.expand_path('../mongo_mapper_spec_helper', __FILE__)
 
-describe Audited::Auditor, :adapter => :mongo_mapper do
+describe Audited::Auditor, adapter: :mongo_mapper do
 
   describe "configuration" do
     it "should include instance methods" do
@@ -574,6 +574,20 @@ describe Audited::Auditor, :adapter => :mongo_mapper do
       expect(user.around_attr).to be_nil
       expect(user.save).to eq(true)
       expect(user.around_attr).to eq(user.audits.last)
+    end
+  end
+
+  describe "STI auditing" do
+    it "should correctly disable auditing when using STI" do
+      company = Models::ActiveRecord::Company::STICompany.create name: 'The auditors'
+
+      expect(company.type).to eq("Models::ActiveRecord::Company::STICompany")
+
+      expect {
+        Models::ActiveRecord::Company.auditing_enabled = false
+        company.update_attributes name: 'STI auditors'
+        Models::ActiveRecord::Company.auditing_enabled = true
+      }.to_not change(Audited.audit_class, :count)
     end
   end
 end
