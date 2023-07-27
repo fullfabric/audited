@@ -14,3 +14,6 @@ module Audited
 
   @current_user_method = :current_user
 end
+
+require 'audited/auditor'
+require 'audited/audit'
