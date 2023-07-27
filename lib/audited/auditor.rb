@@ -243,6 +243,10 @@ module Audited
     end # InstanceMethods
 
     module AuditedClassMethods
+      def self.extended(base)
+        base.const_set('AUDIT_VAR_NAME', "#{base.name.tableize}_auditing_enabled")
+      end
+
       # Returns an array of columns that are audited. See non_audited_columns
       def audited_columns
         columns.select {|c| !non_audited_columns.include?(c.name) }
@@ -283,11 +287,15 @@ module Audited
       end
 
       def auditing_enabled
-        Audited.store.fetch("#{table_name}_auditing_enabled", true)
+        if (val = Thread.current[const_get('AUDIT_VAR_NAME')]).nil?
+          true # default if not set yet
+        else
+          val
+        end
       end
 
       def auditing_enabled= val
-        Audited.store["#{table_name}_auditing_enabled"] = val
+        Thread.current[const_get('AUDIT_VAR_NAME')] = val
       end
     end
   end
