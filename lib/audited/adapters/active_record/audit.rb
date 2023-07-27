@@ -33,8 +33,7 @@ module Audited
         scope :auditable_finder, ->(auditable_id, auditable_type){where(auditable_id: auditable_id, auditable_type: auditable_type)}
         # Return all audits older than the current one.
         def ancestors
-          self.class.ascending.where(['auditable_id = ? and auditable_type = ? and version <= ?',
-            auditable_id, auditable_type, version])
+          self.class.ascending.auditable_finder(auditable_id, auditable_type).to_version(version)
         end
 
         # Allows user to be set to either a string or an ActiveRecord object

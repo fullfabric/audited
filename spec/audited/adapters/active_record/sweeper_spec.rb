@@ -3,12 +3,12 @@ require File.expand_path('../active_record_spec_helper', __FILE__)
 class AuditsController < ActionController::Base
   def audit
     @company = Models::ActiveRecord::Company.create
-    render :nothing => true
+    render nothing: true
   end
 
   def update_user
-    current_user.update_attributes( :password => 'foo')
-    render :nothing => true
+    current_user.update_attributes(password: 'foo')
+    render nothing: true
   end
 
   private
@@ -17,7 +17,7 @@ class AuditsController < ActionController::Base
   attr_accessor :custom_user
 end
 
-describe AuditsController, :adapter => :active_record do
+describe AuditsController, adapter: :active_record do
   include RSpec::Rails::ControllerExampleGroup
   render_views
 
@@ -25,10 +25,9 @@ describe AuditsController, :adapter => :active_record do
     Audited.current_user_method = :current_user
   end
 
-  let( :user ) { create_user }
+  let(:user) { create_user }
 
   describe "POST audit" do
-
     it "should audit user" do
       controller.send(:current_user=, user)
       expect {
@@ -66,7 +65,6 @@ describe AuditsController, :adapter => :active_record do
 
       expect(assigns(:company).audits.last.request_uuid).to eq("abc123")
     end
-
   end
 
   describe "POST update_user" do
@@ -83,7 +81,7 @@ describe AuditsController, :adapter => :active_record do
 end
 
 
-describe Audited::Sweeper, :adapter => :active_record do
+describe Audited::Sweeper, adapter: :active_record do
 
   it "should be thread-safe" do
     t1 = Thread.new do
