@@ -37,7 +37,6 @@ module Audited
       #
       class Audit < ::ActiveRecord::Base
         include Audited::Audit
-        include ActiveModel::Observing
 
         serialize :audited_changes, YAMLIfTextColumnType
 

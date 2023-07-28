@@ -203,9 +203,7 @@ describe Audited::Adapters::MongoMapper::Audit, :adapter => :mongo_mapper do
           raise StandardError
         end
       }.to raise_exception
-      expect(Thread.current[:audited_user]).to be_nil
+      expect(Audited.store[:audited_user]).to be_nil
     end
-
   end
-
 end

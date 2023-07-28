@@ -21,10 +21,10 @@ module Audited
       # by +user+. This method is hopefully threadsafe, making it ideal
       # for background operations that require audit information.
       def as_user(user, &block)
-        Thread.current[:audited_user] = user
+        ::Audited.store[:audited_user] = user
         yield
       ensure
-        Thread.current[:audited_user] = nil
+        ::Audited.store[:audited_user] = nil
       end
 
       # @private
@@ -90,12 +90,18 @@ module Audited
     end
 
     def set_audit_user
-      self.user = Thread.current[:audited_user] if Thread.current[:audited_user]
+      self.user ||= ::Audited.store[:audited_user] # from .as_user
+      self.user ||= ::Audited.store[:current_user] # from Sweeper
       nil # prevent stopping callback chains
     end
 
     def set_request_uuid
+      self.request_uuid ||= ::Audited.store[:current_request_uuid]
       self.request_uuid ||= SecureRandom.uuid
+    end
+
+    def set_remote_address
+      self.remote_address ||= ::Audited.store[:current_remote_address]
     end
   end
 end

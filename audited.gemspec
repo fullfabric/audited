@@ -17,8 +17,6 @@ Gem::Specification.new do |gem|
   gem.files         = `git ls-files`.split($\).reject{|f| f =~ /(\.gemspec|lib\/audited\-|adapters|generators)/ }
   gem.require_paths = ['lib']
 
-  gem.add_dependency 'rails-observers', '~> 0.1.2'
-
   gem.add_development_dependency 'appraisal'
   gem.add_development_dependency 'rails', '~> 5.2.0'
   gem.add_development_dependency 'rspec-rails', '~> 4.0'

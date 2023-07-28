@@ -40,12 +40,6 @@ Add the appropriate gem to your Gemfile:
 gem "audited", "~> 4.3"
 ```
 
-If you are using rails 5.0, you would also need the following line in your Gemfile.
-
-```ruby
-gem "rails-observers", github: 'rails/rails-observers'
-```
-
 Then, from your Rails app directory, create the `audits` table:
 
 ```bash
