@@ -18,11 +18,11 @@ Gem::Specification.new do |gem|
   gem.require_paths = ['lib']
 
   gem.add_development_dependency 'appraisal'
-  gem.add_development_dependency 'rails', '~> 5.2.0'
-  gem.add_development_dependency 'rspec-rails', '~> 4.0'
+  gem.add_development_dependency 'rails', '>= 4.0', '< 5.2'
+  gem.add_development_dependency 'rspec-rails', '>= 3.5', '< 5.0'
 
   # https://github.com/rails/sprockets-rails/issues/444#issuecomment-637817050
-  gem.add_development_dependency 'sprockets', "<4"
+  gem.add_development_dependency 'sprockets', '<4'
 
   # JRuby support for the test ENV
   if defined?(JRUBY_VERSION)
