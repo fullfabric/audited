@@ -2,8 +2,16 @@ module Audited
   class << self
     attr_accessor :ignored_attributes, :current_user_method, :audit_class
 
+    def audit_class
+      @audit_class || Audited::Adapters::ActiveRecord::Audit
+    end
+
     def store
       Thread.current[:audited_store] ||= {}
+    end
+
+    def config
+      yield(self)
     end
   end
 

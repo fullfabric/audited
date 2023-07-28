@@ -1,6 +1,6 @@
 require File.expand_path('../mongo_mapper_spec_helper', __FILE__)
 
-describe Audited::Adapters::MongoMapper::Audit, :adapter => :mongo_mapper do
+describe Audited::Adapters::MongoMapper::Audit, adapter: :mongo_mapper do
   let(:user) { Models::MongoMapper::User.new :name => 'Testing' }
 
   it "sets created_at timestamp when audit is created" do

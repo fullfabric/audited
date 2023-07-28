@@ -5,7 +5,7 @@ module Audited
   class YAMLIfTextColumnType
     class << self
       def load(obj)
-        if Audited::Audit.columns_hash["audited_changes"].sql_type == "text"
+        if Audited.audit_class.columns_hash["audited_changes"].sql_type == "text"
           ActiveRecord::Coders::YAMLColumn.new(Object).load(obj)
         else
           obj
@@ -13,7 +13,7 @@ module Audited
       end
 
       def dump(obj)
-        if Audited::Audit.columns_hash["audited_changes"].sql_type == "text"
+        if Audited.audit_class.columns_hash["audited_changes"].sql_type == "text"
           ActiveRecord::Coders::YAMLColumn.new(Object).dump(obj)
         else
           obj

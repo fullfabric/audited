@@ -272,6 +272,29 @@ To disable auditing on an entire model:
 User.auditing_enabled = false
 ```
 
+### Custom `Audit` model
+
+If you want to extend or modify the audit model, create a new class that
+inherits from `Audited::Audit`:
+
+```ruby
+class CustomAudit < Audited::Audit
+  def some_custom_behavior
+    "Hiya!"
+  end
+end
+```
+
+Then set it in an initializer:
+
+```ruby
+# config/initializers/audited.rb
+
+Audited.config do |config|
+  config.audit_class = CustomAudit
+end
+```
+
 ## Gotchas
 
 ### Using attr_protected or strong_parameters
