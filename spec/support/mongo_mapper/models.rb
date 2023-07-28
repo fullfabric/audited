@@ -17,11 +17,25 @@ module Models
 
       audited :allow_mass_assignment => true, :except => :password
 
-      attr_protected :logins
+      attr_protected :logins if respond_to?(:attr_protected)
 
       def name=(val)
         write_attribute(:name, CGI.escapeHTML(val))
       end
+    end
+
+    class UserOnlyPassword
+      include ::MongoMapper::Document
+
+      key :name, String
+      key :username, String
+      key :password, String
+      key :activated, Boolean
+      key :suspended_at, Time
+      key :logins, Integer, :default => 0
+      timestamps!
+
+      audited allow_mass_assignment: true, only: [:password]
     end
 
     class CommentRequiredUser

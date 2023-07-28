@@ -30,6 +30,26 @@ describe Audited::Auditor, adapter: :mongo_mapper do
     it "should not save non-audited columns" do
       expect(create_mongo_user.audits.first.audited_changes.keys.any? { |col| ['created_at', 'updated_at', 'password'].include?( col ) }).to eq(false)
     end
+
+    it "should not save other columns than specified in 'only' option" do
+      user = Models::MongoMapper::UserOnlyPassword.create
+      user.instance_eval do
+        def non_column_attr
+          @non_column_attr
+        end
+
+        def non_column_attr=(val)
+          attribute_will_change!("non_column_attr")
+          @non_column_attr = val
+        end
+      end
+
+      user.password = "password"
+      user.non_column_attr = "some value"
+      user.save!
+
+      expect(user.audits.last.audited_changes.keys).to eq(%w{password})
+    end
   end
 
   describe :new do
