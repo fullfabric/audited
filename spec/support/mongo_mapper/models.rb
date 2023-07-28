@@ -12,10 +12,10 @@ module Models
       key :password, String
       key :activated, Boolean
       key :suspended_at, Time
-      key :logins, Integer, :default => 0
+      key :logins, Integer, default: 0
       timestamps!
 
-      audited :allow_mass_assignment => true, :except => :password
+      audited :allow_mass_assignment: true, except: :password
 
       attr_protected :logins if respond_to?(:attr_protected)
 
@@ -32,10 +32,10 @@ module Models
       key :password, String
       key :activated, Boolean
       key :suspended_at, Time
-      key :logins, Integer, :default => 0
+      key :logins, Integer, default: 0
       timestamps!
 
-      audited allow_mass_assignment: true, only: [:password]
+      audited allow_mass_assignment: true, only: :password
     end
 
     class CommentRequiredUser
@@ -46,7 +46,7 @@ module Models
       key :password, String
       key :activated, Boolean
       key :suspended_at, Time
-      key :logins, Integer, :default => 0
+      key :logins, Integer, default: 0
       timestamps!
 
       audited :comment_required => true
@@ -60,7 +60,7 @@ module Models
       key :password, String
       key :activated, Boolean
       key :suspended_at, Time
-      key :logins, Integer, :default => 0
+      key :logins, Integer, default: 0
       timestamps!
 
       audited
@@ -75,7 +75,7 @@ module Models
       key :password, String
       key :activated, Boolean
       key :suspended_at, Time
-      key :logins, Integer, :default => 0
+      key :logins, Integer, default: 0
       timestamps!
 
       attr_accessible :name, :username, :password # declare attr_accessible before calling aaa
@@ -90,7 +90,7 @@ module Models
       key :password, String
       key :activated, Boolean
       key :suspended_at, Time
-      key :logins, Integer, :default => 0
+      key :logins, Integer, default: 0
       timestamps!
 
       audited :allow_mass_assignment => true
@@ -104,7 +104,7 @@ module Models
       key :password, String
       key :activated, Boolean
       key :suspended_at, Time
-      key :logins, Integer, :default => 0
+      key :logins, Integer, default: 0
       timestamps!
 
       audited
@@ -139,7 +139,7 @@ module Models
       key :password, String
       key :activated, Boolean
       key :suspended_at, Time
-      key :logins, Integer, :default => 0
+      key :logins, Integer, default: 0
       timestamps!
 
       has_associated_audits
