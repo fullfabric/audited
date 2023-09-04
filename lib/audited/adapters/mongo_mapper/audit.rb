@@ -45,6 +45,7 @@ module Audited
         def self.up_until(date_or_time); where(:created_at.lte => date_or_time); end
         def self.from_version(version);  where(:version.gte => version); end
         def self.to_version(version);    where(:version.lte => version); end
+        def self.auditable_finder(auditable_id, auditable_type); where(auditable_id: auditable_id, auditable_type: auditable_type); end
 
         class << self
 

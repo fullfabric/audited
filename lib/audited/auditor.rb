@@ -55,7 +55,19 @@ module Audited
           before_destroy :require_comment
         end
 
-        has_many :audits, -> { order(version: :asc) }, as: :auditable, class_name: Audited.audit_class.name
+        if method(:has_many).arity == -1
+          # MongoMapper
+          has_many :audits,
+            sort: [:version, :asc],
+            as: :auditable,
+            class_name: Audited.audit_class.name
+        else
+          # Rails 4+
+          has_many :audits, -> { order(version: :asc) },
+            as: :auditable,
+            class_name: Audited.audit_class.name
+        end
+
         Audited.audit_class.audited_class_names << to_s
 
         after_create :audit_create    if audited_options[:on].include?(:create)
@@ -281,14 +293,15 @@ module Audited
       end
 
       def auditing_enabled
-        Audited.store.fetch("#{name.tableize}_auditing_enabled", true)
+        Audited.store.fetch("#{class_prefix}_auditing_enabled", true)
       end
 
       def auditing_enabled=(val)
-        Audited.store["#{name.tableize}_auditing_enabled"] = val
+        Audited.store["#{class_prefix}_auditing_enabled"] = val
       end
 
       protected
+
       def default_ignored_attributes
         [primary_key, inheritance_column] + Audited.ignored_attributes
       end

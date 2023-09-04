@@ -36,6 +36,7 @@ describe AuditsController, adapter: :active_record do
   describe "POST audit" do
     it "should audit user" do
       controller.send(:current_user=, user)
+
       expect {
         post :create
       }.to change(Audited.audit_class, :count)

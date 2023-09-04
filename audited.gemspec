@@ -20,6 +20,8 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'appraisal'
   gem.add_development_dependency 'rails', '>= 4.0', '< 5.2'
   gem.add_development_dependency 'rspec-rails', '>= 3.5', '< 5.0'
+  gem.add_development_dependency 'mongo', '~> 2.16.0' # Keep support for MongoDB 3.2.
+  gem.add_development_dependency 'mongo_mapper', '~> 0.15.0'
 
   # https://github.com/rails/sprockets-rails/issues/444#issuecomment-637817050
   gem.add_development_dependency 'sprockets', '<4'
@@ -29,11 +31,11 @@ Gem::Specification.new do |gem|
     gem.add_development_dependency 'activerecord-jdbcsqlite3-adapter', '~> 1.3'
     gem.add_development_dependency 'activerecord-jdbcpostgresql-adapter', '~> 1.3'
     gem.add_development_dependency 'activerecord-jdbcmysql-adapter', '~> 1.3'
-    gem.add_development_dependency 'bson', '~> 1.6'
+    gem.add_development_dependency 'bson', '~> 4.15'
   else
     gem.add_development_dependency 'sqlite3', '~> 1.3'
     gem.add_development_dependency 'mysql2', '~> 0.3.20'
     gem.add_development_dependency 'pg', '~> 0.18'
-    gem.add_development_dependency 'bson_ext', '~> 1.6'
+    gem.add_development_dependency 'bson_ext'
   end
 end

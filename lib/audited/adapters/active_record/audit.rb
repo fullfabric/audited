@@ -6,7 +6,7 @@ module Audited
     class << self
       def load(obj)
         if Audited.audit_class.columns_hash["audited_changes"].type.to_s == "text"
-          ActiveRecord::Coders::YAMLColumn.new(Object).load(obj)
+          ::ActiveRecord::Coders::YAMLColumn.new(Object).load(obj)
         else
           obj
         end
@@ -14,7 +14,7 @@ module Audited
 
       def dump(obj)
         if Audited.audit_class.columns_hash["audited_changes"].type.to_s == "text"
-          ActiveRecord::Coders::YAMLColumn.new(Object).dump(obj)
+          ::ActiveRecord::Coders::YAMLColumn.new(Object).dump(obj)
         else
           obj
         end

@@ -2,13 +2,18 @@ require 'active_record'
 require 'audited/auditor'
 require 'audited/adapters/active_record/audit'
 
-module Audited::Auditor::ClassMethods
-  def default_ignored_attributes
-    [primary_key, inheritance_column]
+module Audited::Auditor::AuditedClassMethods
+  protected
+
+  def class_prefix
+    table_name
   end
 end
 
-::ActiveRecord::Base.send :include, Audited::Auditor
+ActiveSupport.on_load :active_record do
+  require "audited/audit"
+  include Audited::Auditor
+end
 
 Audited.audit_class = Audited::Adapters::ActiveRecord::Audit
 

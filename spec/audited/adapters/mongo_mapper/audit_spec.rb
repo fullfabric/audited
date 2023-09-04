@@ -1,7 +1,7 @@
 require File.expand_path('../mongo_mapper_spec_helper', __FILE__)
 
 describe Audited::Adapters::MongoMapper::Audit, adapter: :mongo_mapper do
-  let(:user) { Models::MongoMapper::User.new :name => 'Testing' }
+  let(:user) { Models::MongoMapper::User.new name: 'Testing' }
 
   it "sets created_at timestamp when audit is created" do
     subject.save!
@@ -9,7 +9,6 @@ describe Audited::Adapters::MongoMapper::Audit, adapter: :mongo_mapper do
   end
 
   describe "user=" do
-
     it "should be able to set the user to a model object" do
       subject.user = user
       expect(subject.user).to eq(user)
@@ -45,11 +44,9 @@ describe Audited::Adapters::MongoMapper::Audit, adapter: :mongo_mapper do
       subject.user = user
       expect(subject.username).to be_nil
     end
-
   end
 
   describe "revision" do
-
     it "should recreate attributes" do
       user = Models::MongoMapper::User.create :name => "1"
       5.times { |i| user.update_attribute :name, (i + 2).to_s }
@@ -81,7 +78,6 @@ describe Audited::Adapters::MongoMapper::Audit, adapter: :mongo_mapper do
       expect(revision.name).to eq(user.name)
       expect(revision).to be_a_new_record
     end
-
   end
 
   it "should set the version number on create" do
@@ -102,12 +98,10 @@ describe Audited::Adapters::MongoMapper::Audit, adapter: :mongo_mapper do
   end
 
   describe "reconstruct_attributes" do
-
     it "should work with the old way of storing just the new value" do
       audits = Audited.audit_class.reconstruct_attributes([Audited.audit_class.new(:audited_changes => {'attribute' => 'value'})])
       expect(audits['attribute']).to eq('value')
     end
-
   end
 
   describe "audited_classes" do
@@ -128,21 +122,17 @@ describe Audited::Adapters::MongoMapper::Audit, adapter: :mongo_mapper do
   end
 
   describe "new_attributes" do
-
     it "should return a hash of the new values" do
       new_attributes = Audited.audit_class.new(:audited_changes => {:a => [1, 2], :b => [3, 4]}).new_attributes
       expect(new_attributes).to eq({'a' => 2, 'b' => 4})
     end
-
   end
 
   describe "old_attributes" do
-
     it "should return a hash of the old values" do
       old_attributes = Audited.audit_class.new(:audited_changes => {:a => [1, 2], :b => [3, 4]}).old_attributes
       expect(old_attributes).to eq({'a' => 1, 'b' => 3})
     end
-
   end
 
   describe "as_user" do
@@ -220,7 +210,7 @@ describe Audited::Adapters::MongoMapper::Audit, adapter: :mongo_mapper do
       user = Models::MongoMapper::User.create(name: "John")
       user.destroy
       user.audits.last.undo
-      user = Models::MongoMapper::User.find_by(name: "John")
+      user = Models::MongoMapper::User.find_by_name("John")
       expect(user.name).to eq("John")
     end
 

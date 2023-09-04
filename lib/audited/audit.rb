@@ -11,10 +11,15 @@ module Audited
         belongs_to :user,       polymorphic: true
         belongs_to :associated, polymorphic: true
 
-        before_create :set_version_number, :set_audit_user, :set_request_uuid
+        before_create :set_version_number, :set_audit_user, :set_request_uuid, :set_remote_address
 
         cattr_accessor :audited_class_names
         self.audited_class_names = Set.new
+      end
+
+      # Returns the list of classes that are being audited
+      def audited_classes
+        audited_class_names.map(&:constantize)
       end
 
       # All audits made during the block called will be recorded as made
@@ -87,7 +92,15 @@ module Audited
       model = self.auditable_type.constantize
       if action == 'create'
         # destroys a newly created record
-        model.find(auditable_id).destroy!
+        record = model.find(auditable_id)
+
+        if record.respond_to?(:destroy!)
+          # ActiveRecord
+          record.destroy!
+        else
+          # MongoMapper
+          record.destroy
+        end
       elsif action == 'destroy'
         # creates a new record with the destroyed record attributes
         model.create(audited_changes)

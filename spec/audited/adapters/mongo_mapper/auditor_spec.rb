@@ -30,6 +30,7 @@ describe Audited::Auditor, adapter: :mongo_mapper do
     it "should be configurable which attributes are not audited via non_audited_columns=" do
       class Secret2
         include MongoMapper::Document
+        audited
         self.non_audited_columns = ['delta', 'top_secret', 'created_at']
       end
 
@@ -631,7 +632,7 @@ describe Audited::Auditor, adapter: :mongo_mapper do
     it "should correctly disable auditing when using STI" do
       company = Models::MongoMapper::Company::STICompany.create name: 'The auditors'
 
-      expect(company.type).to eq("Models::MongoMapper::Company::STICompany")
+      expect(company._type).to eq("Models::MongoMapper::Company::STICompany")
 
       expect {
         Models::MongoMapper::Company.auditing_enabled = false

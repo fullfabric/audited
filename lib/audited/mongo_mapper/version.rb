@@ -1,5 +1,5 @@
 module Audited
   module MongoMapper
-    VERSION = "4.3.0"
+    VERSION = "4.6.0"
   end
 end

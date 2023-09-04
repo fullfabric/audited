@@ -25,12 +25,13 @@ end
 
 describe MongoAuditsController, adapter: :mongo_mapper do
   include RSpec::Rails::ControllerExampleGroup
+  render_views
 
   before(:each) do
     Audited.current_user_method = :current_user
   end
 
-  let( :user ) { create_mongo_user }
+  let(:user) { create_mongo_user }
 
   describe "POST audit" do
 
