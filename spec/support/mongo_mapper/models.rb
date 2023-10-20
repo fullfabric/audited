@@ -49,7 +49,7 @@ module Models
       key :logins, Integer, default: 0
       timestamps!
 
-      audited :comment_required => true
+      audited comment_required: true
     end
 
     class AccessibleAfterDeclarationUser
@@ -93,7 +93,7 @@ module Models
       key :logins, Integer, default: 0
       timestamps!
 
-      audited :allow_mass_assignment => true
+      audited allow_mass_assignment: true
     end
 
     class UserWithAfterAudit
@@ -151,9 +151,9 @@ module Models
       key :name, String
       key :owner_id, ObjectId
 
-      belongs_to :owner, :class_name => "Owner"
+      belongs_to :owner, class_name: "Owner"
       attr_accessible :name, :owner # declare attr_accessible before calling aaa
-      audited :associated_with => :owner
+      audited associated_with: :owner
     end
 
     class OnUpdateDestroy
@@ -162,7 +162,7 @@ module Models
       key :name, String
       key :owner_id, ObjectId
 
-      audited :on => [:update, :destroy]
+      audited on: [:update, :destroy]
     end
 
     class OnCreateDestroy
@@ -171,7 +171,7 @@ module Models
       key :name, String
       key :owner_id, ObjectId
 
-      audited :on => [:create, :destroy]
+      audited on: [:create, :destroy]
     end
 
     class OnCreateDestroyExceptName
@@ -180,7 +180,7 @@ module Models
       key :name, String
       key :owner_id, ObjectId
 
-      audited :except => :name, :on => [:create, :destroy]
+      audited except: :name, on: [:create, :destroy]
     end
 
     class OnCreateUpdate
@@ -189,7 +189,28 @@ module Models
       key :name, String
       key :owner_id, ObjectId
 
-      audited :on => [:create, :update]
+      audited on: [:create, :update]
+    end
+
+    class EmbeddedModel
+      include ::MongoMapper::EmbeddedDocument
+      include ::MongoMapper::Plugins::Dirty
+
+      embedded_in :embedding_model
+
+      key :name, String
+      key :description, String
+
+      audited only: [:name, :description]
+    end
+
+    class EmbeddingModel
+      include ::MongoMapper::Document
+
+      key :name, String
+      one :embedded_model, class: ::Models::MongoMapper::EmbeddedModel
+
+      audited only: [:name]
     end
 
     class RichObjectUser

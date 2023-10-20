@@ -219,4 +219,31 @@ describe Audited::Adapters::MongoMapper::Audit, adapter: :mongo_mapper do
       expect {user.audits.last.undo}.to change(Models::MongoMapper::User, :count).by(-1)
     end
   end
+
+  describe "embedded documents" do
+    fit "audits changes to the embedded documents" do
+      model = Models::MongoMapper::EmbeddingModel.create({
+        name: 'Embedding Model',
+        embedded_model: Models::MongoMapper::EmbeddedModel.new({
+          name: 'Embedded Model',
+          description: 'Description'
+        })
+      })
+
+      model.embedded_model.name = 'New Name'
+      model.embedded_model.description = 'New Description'
+
+      expect(model.audits.first.version).to eq(1)
+      expect(model.embedded_model.audits.first.version).to eq(1)
+
+      model.save!
+
+      audits = model.audits.reload.all
+      expect(audits.length).to eq(1)
+
+      audits = model.embedded_model.audits.reload.all
+      expect(audits.length).to eq(2)
+      expect(audits.last.version).to eq(2)
+    end
+  end
 end

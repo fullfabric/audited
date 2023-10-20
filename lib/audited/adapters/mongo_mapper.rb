@@ -18,10 +18,13 @@ module Audited::Auditor::AuditedClassMethods
 
   def class_prefix
     collection_name
+  rescue MongoMapper::NotSupported
+    name.tableize
   end
 end
 
 ::MongoMapper::Document.plugin Audited::Auditor
+::MongoMapper::EmbeddedDocument.plugin Audited::Auditor
 
 Audited.audit_class = Audited::Adapters::MongoMapper::Audit
 
