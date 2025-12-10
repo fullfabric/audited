@@ -21,7 +21,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'rails', '>= 4.0', '< 5.2'
   gem.add_development_dependency 'rspec-rails', '>= 3.5', '< 5.0'
   gem.add_development_dependency 'mongo', '~> 2.16.0' # Keep support for MongoDB 3.2.
-  gem.add_development_dependency 'mongo_mapper', '~> 0.15.0'
+  gem.add_development_dependency 'mongo_mapper', '~> 0.15'
 
   # https://github.com/rails/sprockets-rails/issues/444#issuecomment-637817050
   gem.add_development_dependency 'sprockets', '<4'

@@ -17,10 +17,9 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'audited', Audited::VERSION
   gem.add_dependency 'mongo', '~> 2.16.0'
-  gem.add_dependency 'mongo_mapper', '~> 0.15.0'
+  gem.add_dependency 'mongo_mapper', '~> 0.15'
 
   gem.files         = `git ls-files lib`.split($\).grep(/mongo_mapper/)
   gem.files         << 'LICENSE'
   gem.require_paths = ['lib']
 end
-
