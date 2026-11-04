@@ -221,7 +221,7 @@ describe Audited::Adapters::MongoMapper::Audit, adapter: :mongo_mapper do
   end
 
   describe "embedded documents" do
-    fit "audits changes to the embedded documents" do
+    it "audits changes to the embedded documents" do
       model = Models::MongoMapper::EmbeddingModel.create({
         name: 'Embedding Model',
         embedded_model: Models::MongoMapper::EmbeddedModel.new({
